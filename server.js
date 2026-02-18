@@ -1,22 +1,69 @@
 const express = require("express");
-const path = require("path");
 const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Demo login user
 const USER = {
   email: "admin@magical.com",
   password: "123456"
 };
 
-// Serve login page
+// Login Page (No separate HTML file needed)
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "login.html"));
+  res.send(`
+    <!DOCTYPE html>
+    <html>
+    <head>
+      <title>Magical Panel Login</title>
+      <style>
+        body {
+          background: #0f172a;
+          color: white;
+          font-family: Arial;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+        }
+        .box {
+          background: #1e293b;
+          padding: 30px;
+          border-radius: 10px;
+          width: 300px;
+        }
+        input {
+          width: 100%;
+          padding: 10px;
+          margin: 8px 0;
+          border: none;
+          border-radius: 5px;
+        }
+        button {
+          width: 100%;
+          padding: 10px;
+          background: #22c55e;
+          border: none;
+          color: white;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+      </style>
+    </head>
+    <body>
+      <div class="box">
+        <h2>Magical Panel</h2>
+        <form method="POST" action="/login">
+          <input type="email" name="email" placeholder="Email" required>
+          <input type="password" name="password" placeholder="Password" required>
+          <button type="submit">Login</button>
+        </form>
+      </div>
+    </body>
+    </html>
+  `);
 });
 
-// Login route
 app.post("/login", (req, res) => {
   const { email, password } = req.body;
 
